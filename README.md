@@ -601,6 +601,7 @@ Davlat portal → tashqi servisga bog'liqlik ❌
 
 ## 22. Amaliyotlar
 
- - [Sprint 1. Poydevor](sprint-1.md)  
+ - [Sprint 1. FastAPI, PostgreSQL, React, URL Shortener. Base62](sprint-1.md)  
+ - [Sprint 2. ClickHouse. Click event logger. Analytics. Rate limiting. QR Code](sprint-2.md)  
 
 *POC-014 · Uzinfocom R&D · Aprel 2026*
