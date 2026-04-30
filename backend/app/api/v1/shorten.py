@@ -1,10 +1,11 @@
 from datetime import datetime, timedelta, timezone
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, func
 import validators
 
+from app.core.rate_limit import check_rate_limit
 from app.db.database import get_db
 from app.db.models import URL
 from app.core.base62 import encode
@@ -25,7 +26,10 @@ class ShortenResponse(BaseModel):
     expires_at: datetime | None = None
 
 @router.post("/shorten", response_model=ShortenResponse)
-async def shorten_url(req: ShortenRequest, db: AsyncSession = Depends(get_db)):
+async def shorten_url(req: ShortenRequest, request: Request, db: AsyncSession = Depends(get_db)):
+    # Rate limit tekshirish
+    await check_rate_limit(request, limit=100, window=3600)
+
     # URL tekshirish
     if not validators.url(req.long_url):
         raise HTTPException(status_code=400, detail="Noto'g'ri URL format")
