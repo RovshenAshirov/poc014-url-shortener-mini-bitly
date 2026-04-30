@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import QRCode from 'qrcode'
+import { useState, useEffect, useRef } from 'react'
 
 export default function App() {
   const [longUrl, setLongUrl] = useState('')
@@ -8,6 +9,7 @@ export default function App() {
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
   const [copied, setCopied] = useState(false)
+  const canvasRef = useRef(null)
 
   async function handleShorten() {
     if (!longUrl) return
@@ -26,6 +28,15 @@ export default function App() {
       const data = await res.json()
       if (!res.ok) { setError(data.detail || 'Xatolik yuz berdi'); return }
       setResult(data)
+      setTimeout(() => {
+        if (canvasRef.current) {
+          QRCode.toCanvas(canvasRef.current, data.short_url, {
+            width: 160,
+            margin: 2,
+            color: { dark: '#1d4ed8', light: '#ffffff' }
+          })
+        }
+      }, 100)
     } catch (e) {
       setError('Server bilan ulanishda xatolik')
     } finally {
@@ -122,6 +133,39 @@ export default function App() {
                   Muddati: {new Date(result.expires_at).toLocaleDateString('uz-UZ')}
                 </p>
               )}
+              {/* QR Code */}
+              <div className="mt-3 pt-3 border-t border-green-200">
+                <p className="text-xs text-gray-500 mb-2">QR Code:</p>
+                <div className="flex items-center gap-4">
+                  <canvas ref={canvasRef} className="rounded" />
+                  <div className="flex flex-col gap-2">
+                    <button
+                      onClick={() => {
+                        const link = document.createElement('a')
+                        link.download = `qr-${result.short_code}.png`
+                        link.href = canvasRef.current.toDataURL()
+                        link.click()
+                      }}
+                      className="text-xs bg-white border border-gray-200 hover:bg-gray-50 px-3 py-1.5 rounded-lg transition-colors"
+                    >
+                      PNG yuklab olish
+                    </button>
+                    <button
+                      onClick={() => {
+                        const svgData = `<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><image href='${canvasRef.current.toDataURL()}' width='160' height='160'/></svg>`
+                        const blob = new Blob([svgData], { type: 'image/svg+xml' })
+                        const link = document.createElement('a')
+                        link.download = `qr-${result.short_code}.svg`
+                        link.href = URL.createObjectURL(blob)
+                        link.click()
+                      }}
+                      className="text-xs bg-white border border-gray-200 hover:bg-gray-50 px-3 py-1.5 rounded-lg transition-colors"
+                    >
+                      SVG yuklab olish
+                    </button>
+                  </div>
+                </div>
+              </div>
             </div>
           )}
         </div>
