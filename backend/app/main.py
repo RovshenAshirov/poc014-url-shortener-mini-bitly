@@ -5,7 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.db.clickhouse import init_clickhouse, close_clickhouse
 from app.db.database import engine, Base
 from app.core.cache import close_redis
-from app.api.v1 import shorten, redirect
+from app.api.v1 import shorten, redirect, stats
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -35,6 +36,7 @@ app.add_middleware(
 
 app.include_router(shorten.router, prefix="/api/v1")
 app.include_router(redirect.router)
+app.include_router(stats.router, prefix="/api/v1")
 
 @app.get("/health")
 async def health():
