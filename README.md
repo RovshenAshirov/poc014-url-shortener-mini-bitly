@@ -604,5 +604,6 @@ Davlat portal → tashqi servisga bog'liqlik ❌
  - [Sprint 1. FastAPI, PostgreSQL, React, URL Shortener. Base62](sprint-1.md)  
  - [Sprint 2. ClickHouse. Click event logger. Analytics. Rate limiting. QR Code](sprint-2.md)  
  - [Sprint 3. Analytics Dashboard](sprint-3.md)  
+ - [Sprint 4. Part 1. Load Testing](tests/README.md)  
 
 *POC-014 · Uzinfocom R&D · Aprel 2026*

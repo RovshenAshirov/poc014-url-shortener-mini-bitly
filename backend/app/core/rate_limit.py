@@ -2,7 +2,7 @@ from fastapi import HTTPException, Request
 from app.core.cache import get_redis
 
 async def check_rate_limit(request: Request, limit: int = 100, window: int = 3600):
-    redis = await get_redis()
+    redis = get_redis()
     ip = request.client.host
     key = f"rate:{ip}"
 

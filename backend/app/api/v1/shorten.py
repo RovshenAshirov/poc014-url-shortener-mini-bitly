@@ -28,7 +28,7 @@ class ShortenResponse(BaseModel):
 @router.post("/shorten", response_model=ShortenResponse)
 async def shorten_url(req: ShortenRequest, request: Request, db: AsyncSession = Depends(get_db)):
     # Rate limit tekshirish
-    await check_rate_limit(request, limit=100, window=3600)
+    # await check_rate_limit(request, limit=100, window=3600)
 
     # URL tekshirish
     if not validators.url(req.long_url):
@@ -74,7 +74,7 @@ async def shorten_url(req: ShortenRequest, request: Request, db: AsyncSession = 
     await db.commit()
 
     # Redis ga kesh
-    redis = await get_redis()
+    redis = get_redis()
     ttl = req.ttl_days * 86400 if req.ttl_days else 86400
     await redis.setex(f"url:{short_code}", ttl, req.long_url)
 

@@ -8,6 +8,7 @@ from app.db.clickhouse import init_clickhouse, close_clickhouse, get_clickhouse
 from app.db.database import engine, Base
 from app.core.cache import close_redis
 from app.api.v1 import shorten, redirect, stats, analytics
+from app.services.analytics import flush_worker
 
 
 @asynccontextmanager
@@ -17,7 +18,9 @@ async def lifespan(app: FastAPI):
         await conn.run_sync(Base.metadata.create_all)
     # ClickHouse
     await init_clickhouse()
+    flush_task = asyncio.create_task(flush_worker())
     yield
+    flush_task.cancel()
     # Shutdown
     await close_redis()
     await close_clickhouse()

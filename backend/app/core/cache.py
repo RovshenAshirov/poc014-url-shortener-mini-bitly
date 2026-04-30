@@ -3,10 +3,14 @@ from app.core.config import settings
 
 redis_client: aioredis.Redis = None
 
-async def get_redis() -> aioredis.Redis:
+def get_redis() -> aioredis.Redis:
     global redis_client
     if redis_client is None:
-        redis_client = aioredis.from_url(settings.REDIS_URL, decode_responses=True)
+        redis_client = aioredis.from_url(
+            settings.REDIS_URL,
+            decode_responses=True,
+            max_connections=200,
+        )
     return redis_client
 
 async def close_redis():
