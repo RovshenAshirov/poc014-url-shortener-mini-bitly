@@ -1,4 +1,6 @@
-# POC-014 — Texnik Atamalar Lug'ati
+
+# POC-014 - URL Shortener с аналитикой - Mini bit.ly
+# Asosiy Tushunchalar
 
 **Muallif:** Rovshen R. Ashirov  
 **Loyiha:** POC-014 URL Shortener  
