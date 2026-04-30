@@ -1,3 +1,4 @@
+import Dashboard from './Dashboard'
 import QRCode from 'qrcode'
 import { useState, useEffect, useRef } from 'react'
 
@@ -169,6 +170,12 @@ export default function App() {
             </div>
           )}
         </div>
+
+        <Dashboard
+          shortCode={result?.short_code}
+          shortUrl={result?.short_url}
+        />
+
         <p className="text-center text-xs text-gray-400 mt-4">Uzinfocom R&D · POC-014</p>
       </div>
     </div>
