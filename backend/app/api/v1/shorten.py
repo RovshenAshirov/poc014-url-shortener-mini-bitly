@@ -84,3 +84,32 @@ async def shorten_url(req: ShortenRequest, request: Request, db: AsyncSession = 
         long_url=req.long_url,
         expires_at=expires_at,
     )
+
+
+class LinkItem(BaseModel):
+    short_code: str
+    short_url: str
+    long_url: str
+    click_count: int
+    created_at: datetime
+    expires_at: datetime | None
+    is_custom: bool
+
+@router.get("/links", response_model=list[LinkItem])
+async def get_links(db: AsyncSession = Depends(get_db)):
+    result = await db.execute(
+        select(URL).order_by(URL.created_at.desc()).limit(20)
+    )
+    urls = result.scalars().all()
+    return [
+        LinkItem(
+            short_code=u.short_code,
+            short_url=f"{settings.BASE_URL}/{u.short_code}",
+            long_url=u.long_url,
+            click_count=u.click_count,
+            created_at=u.created_at,
+            expires_at=u.expires_at,
+            is_custom=u.is_custom,
+        )
+        for u in urls
+    ]

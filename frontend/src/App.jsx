@@ -1,4 +1,5 @@
 import Dashboard from './Dashboard'
+import LinksList from './LinksList'
 import QRCode from 'qrcode'
 import { useState, useEffect, useRef } from 'react'
 
@@ -175,6 +176,8 @@ export default function App() {
           shortCode={result?.short_code}
           shortUrl={result?.short_url}
         />
+
+        <LinksList onSelect={(link) => setResult(link)} />
 
         <p className="text-center text-xs text-gray-400 mt-4">Uzinfocom R&D · POC-014</p>
       </div>
