@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import Chart from 'chart.js/auto'
+import GeoMap from './GeoMap'
 
 export default function Dashboard({ shortCode, shortUrl }) {
   const [stats, setStats] = useState(null)
@@ -103,6 +104,8 @@ export default function Dashboard({ shortCode, shortUrl }) {
           <canvas ref={chartRef} height="120"></canvas>
         </div>
       )}
+
+      <GeoMap geo={geo} />
 
       {/* Geo jadval */}
       {geo.length > 0 && (
