@@ -605,5 +605,6 @@ Davlat portal → tashqi servisga bog'liqlik ❌
  - [Sprint 2. ClickHouse. Click event logger. Analytics. Rate limiting. QR Code](sprint-2.md)  
  - [Sprint 3. Analytics Dashboard](sprint-3.md)  
  - [Sprint 4. Part 1. Load Testing](tests/README.md)  
+ - [Sprint 4. Part 2. Prometheus va Error Handling](sprint-4.md)  
 
 *POC-014 · Uzinfocom R&D · Aprel 2026*
